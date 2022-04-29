@@ -1,8 +1,6 @@
 import pygame
 import sys
-from Invader import Invader
 from collections import defaultdict
-from Player import Player
 
 
 class Game:
@@ -17,17 +15,12 @@ class Game:
         self.frame_rate = frame_rate
         self.game_over = False
         self.objects = []
-        # self.objects.append(Invader(250, 250, "images//norm.png", 25, 25))
-        # self.objects.append(Player(300, 500, "images//norm.png", 25, 25))
-        pygame.mixer.pre_init(44100, 16, 2, 4096)
         pygame.init()
-        pygame.font.init()
         self.surface = pygame.display.set_mode((width, height))
         pygame.display.set_caption(caption)
         self.clock = pygame.time.Clock()
         self.keydown_handlers = defaultdict(list)
         self.keyup_handlers = defaultdict(list)
-        self.mouse_handlers = []
 
     def handle_events(self):
         for event in pygame.event.get():
@@ -40,11 +33,6 @@ class Game:
             elif event.type == pygame.KEYUP:
                 for handler in self.keyup_handlers[event.key]:
                     handler(event.key)
-            elif event.type in (pygame.MOUSEBUTTONDOWN,
-                                pygame.MOUSEBUTTONUP,
-                                pygame.MOUSEMOTION):
-                for handler in self.mouse_handlers:
-                    handler(event.type, event.pos)
 
     def update(self):
         for o in self.objects:

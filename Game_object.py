@@ -51,5 +51,4 @@ class GameObject:
     def update(self):
         if self.speed == [0, 0]:
             return
-
         self.move(*self.speed)

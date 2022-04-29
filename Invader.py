@@ -1,5 +1,4 @@
 import pygame
-import config as c
 from Game_object import GameObject
 
 

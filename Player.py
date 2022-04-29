@@ -16,6 +16,7 @@ class Player(GameObject):
         self.space_down = False
         self.timer_continuous = None
         self.timer_discontinuous = c.bullet_dist
+        self.killed = False
 
     def draw(self, surface):
         # surface.blit(self.surf, self.rect)
