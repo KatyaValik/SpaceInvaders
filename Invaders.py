@@ -11,6 +11,7 @@ class Invaders(GameObject):
         self.invaders = None
         self.create_invaders()
         self.last_row = None
+        self.score = 0
         self.killed = False
         self.lost = False
 
@@ -35,7 +36,7 @@ class Invaders(GameObject):
                 elif col == invaders_count_x - 1:
                     right = True
                 invader = Invader(col * (c.invader_width + c.invader_offset_x),
-                                  row * (c.invader_height + c.invader_offset_y),
+                                  row * (c.invader_height + c.invader_offset_y) + c. invaders_offset_y,
                                   c.invader_image,
                                   c.invader_width,
                                   c.invader_height,

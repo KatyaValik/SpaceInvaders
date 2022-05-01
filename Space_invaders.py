@@ -3,7 +3,9 @@ from Game import Game
 from Player import Player
 from Invaders import Invaders
 from Shelter import Shelter
+from Text_object import TextObject
 import config as c
+import time
 
 
 class SpaceInvaders(Game):
@@ -15,7 +17,10 @@ class SpaceInvaders(Game):
                       c.frame_rate)
         self.invaders = None
         self.player = None
+        self.lives = c.initial_lives
         self.shelters = None
+        self.score_label = None
+        self.lives_label = None
         self.create_objects()
         self.game_is_running = True
 
@@ -43,6 +48,7 @@ class SpaceInvaders(Game):
         self.create_player()
         self.create_invaders()
         self.create_shelters()
+        self.create_labels()
 
     def create_shelters(self):
         self.shelters = []
@@ -57,6 +63,22 @@ class SpaceInvaders(Game):
             self.shelters.append(shelter)
             self.objects.append(shelter)
 
+    def create_labels(self):
+        self.score_label = TextObject(c.score_offset,
+                                      c.status_offset_y,
+                                      lambda: f'SCORE: {self.invaders.score}',
+                                      c.text_color,
+                                      c.font_name,
+                                      c.font_size)
+        self.objects.append(self.score_label)
+        self.lives_label = TextObject(c.lives_offset,
+                                      c.status_offset_y,
+                                      lambda: f'LIVES: {self.lives}',
+                                      c.text_color,
+                                      c.font_name,
+                                      c.font_size)
+        self.objects.append(self.lives_label)
+
     def kill_invaders(self):
         for row in self.invaders.invaders:
             for invader in row:
@@ -64,11 +86,16 @@ class SpaceInvaders(Game):
                     if pygame.Rect.colliderect(invader.bounds, bullet.bounds):
                         row.remove(invader)
                         self.player.bullets.remove(bullet)
+                        self.invaders.score = self.invaders.score + 1
 
     def kill_player(self):
         for space_bullet in self.invaders.space_bullets:
             if pygame.Rect.colliderect(space_bullet.bounds, self.player.bounds):
-                self.player.killed = True
+                self.invaders.space_bullets.remove(space_bullet)
+                self.lives = self.lives - 1
+                print(self.lives)
+                if self.lives == 0:
+                    self.player.killed = True
 
     def kill_space_bullet(self):
         for bullet in self.invaders.space_bullets:
@@ -87,13 +114,20 @@ class SpaceInvaders(Game):
                 if pygame.Rect.colliderect(bullet.bounds, shelter.bounds):
                     self.player.bullets.remove(bullet)
 
+    def show_message(self, text, color=(255, 255, 255), font_name='Arial', font_size=20, centralized=False):
+        message = TextObject(c.screen_width // 2, c.screen_height // 2, lambda: text, color, font_name, font_size)
+        self.draw()
+        message.draw(self.surface, centralized)
+        pygame.display.update()
+        time.sleep(c.message_duration)
+
     def win(self):
-        print("YOU WON")
+        self.show_message('YOU WON!', centralized=True)
         self.game_is_running = False
         self.game_over = True
 
     def lose(self):
-        print("YOU LOST")
+        self.show_message('GAME OVER!', centralized=True)
         self.game_is_running = False
         self.game_over = True
 

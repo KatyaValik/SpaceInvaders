@@ -7,6 +7,7 @@ player_width = 25
 player_height = 25
 player_image = "images//background.jpg"
 
+invaders_offset_y = 30
 invader_width = 25
 invader_height = 25
 invader_offset_x = 20
@@ -37,3 +38,14 @@ shelter_colours = [(0, 30, 254),
                     (0, 223, 255),
                     (255, 255, 255)]
 shelter_damage_max = len(shelter_colours) - 1
+
+initial_lives = 3
+
+score_offset = 0
+status_offset_y = 0
+lives_offset = 100
+text_color = (255, 255, 255)
+font_name = 'Arial'
+font_size = 20
+
+message_duration = 2
