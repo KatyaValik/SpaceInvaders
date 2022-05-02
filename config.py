@@ -44,8 +44,12 @@ initial_lives = 3
 score_offset = 0
 status_offset_y = 0
 lives_offset = 100
+levels_offset = 200
 text_color = (255, 255, 255)
 font_name = 'Arial'
 font_size = 20
 
 message_duration = 2
+
+levels = ['level1', 'level2', 'level3']
+levels_count = len(levels) - 1

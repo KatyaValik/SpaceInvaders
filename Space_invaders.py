@@ -5,6 +5,9 @@ from Invaders import Invaders
 from Shelter import Shelter
 from Text_object import TextObject
 import config as c
+import level1
+import level2
+import level3
 import time
 
 
@@ -18,9 +21,11 @@ class SpaceInvaders(Game):
         self.invaders = None
         self.player = None
         self.lives = c.initial_lives
+        self.level_number = 0
         self.shelters = None
         self.score_label = None
         self.lives_label = None
+        self.levels_label = None
         self.create_objects()
         self.game_is_running = True
 
@@ -40,7 +45,9 @@ class SpaceInvaders(Game):
         self.objects.append(self.player)
 
     def create_invaders(self):
-        invaders = Invaders()
+        eval(c.levels[self.level_number]).invaders_rows
+        invaders = Invaders(eval(c.levels[self.level_number]).invaders_rows,
+                            eval(c.levels[self.level_number]).invaders_columns)
         self.invaders = invaders
         self.objects.append(self.invaders)
 
@@ -52,13 +59,12 @@ class SpaceInvaders(Game):
 
     def create_shelters(self):
         self.shelters = []
-        shelter_count = c.screen_width // (c.shelter_space + c.shelter_width)
-        shelter_y = self.player.centery - 30
+        shelter_count = eval(c.levels[self.level_number]).shelters_count
         for i in range(0, shelter_count):
-            shelter = Shelter(c.shelter_space // 2 + i * (c.shelter_space + c.shelter_width),
-                              shelter_y,
+            shelter = Shelter(eval(c.levels[self.level_number]).shelters_coordinates[i][0],
+                              eval(c.levels[self.level_number]).shelters_coordinates[i][1],
                               c.shelter_image,
-                              c.shelter_width,
+                              eval(c.levels[self.level_number]).shelters_coordinates[i][2],
                               c.shelter_height)
             self.shelters.append(shelter)
             self.objects.append(shelter)
@@ -78,6 +84,13 @@ class SpaceInvaders(Game):
                                       c.font_name,
                                       c.font_size)
         self.objects.append(self.lives_label)
+        self.levels_label = TextObject(c.levels_offset,
+                                       c.status_offset_y,
+                                       lambda: f'LEVEL: {self.level_number + 1}',
+                                       c.text_color,
+                                       c.font_name,
+                                       c.font_size)
+        self.objects.append(self.levels_label)
 
     def kill_invaders(self):
         for row in self.invaders.invaders:
@@ -131,11 +144,18 @@ class SpaceInvaders(Game):
         self.game_is_running = False
         self.game_over = True
 
+    def new_level(self):
+        self.objects = []
+        self.create_objects()
+
     def update(self):
-        if self.invaders.killed:
+        if self.invaders.killed and self.level_number == c.levels_count:
             self.win()
         if self.invaders.lost or self.player.killed:
             self.lose()
+        if self.invaders.killed and self.level_number < c.levels_count:
+            self.level_number = self.level_number + 1
+            self.new_level()
         if not self.game_is_running:
             return
         self.kill_invaders()
@@ -143,5 +163,3 @@ class SpaceInvaders(Game):
         self.kill_space_bullet()
         self.kill_bullet()
         super().update()
-
-

@@ -7,9 +7,9 @@ from Space_bullet import SpaceBullet
 
 
 class Invaders(GameObject):
-    def __init__(self):
+    def __init__(self, rows, columns):
         self.invaders = None
-        self.create_invaders()
+        self.create_invaders(rows, columns)
         self.last_row = None
         self.score = 0
         self.killed = False
@@ -20,20 +20,17 @@ class Invaders(GameObject):
         self.space_bullets = []
         self.bullet_timer = time.time()
 
-    def create_invaders(self):
-        w = c.screen_width
-        invaders_count_x = (w // (c.invader_width + c.invader_offset_x)) // 3 * 2
-        invaders_count_y = c.invaders_start_count
-        self.last_row = invaders_count_y
+    def create_invaders(self, rows, columns):
+        self.last_row = columns
         invaders = []
-        for row in range(invaders_count_y):
+        for row in range(rows):
             invaders_row = []
-            for col in range(invaders_count_x):
+            for col in range(columns):
                 left = False
                 right = False
                 if col == 0:
                     left = True
-                elif col == invaders_count_x - 1:
+                elif col == columns - 1:
                     right = True
                 invader = Invader(col * (c.invader_width + c.invader_offset_x),
                                   row * (c.invader_height + c.invader_offset_y) + c. invaders_offset_y,
@@ -41,8 +38,6 @@ class Invaders(GameObject):
                                   c.invader_width,
                                   c.invader_height,
                                   left, right)
-                print('x = ', row * (c.invader_width + c.invader_offset_x))
-                print('y = ', col * (c.invader_height + c.invader_offset_y))
                 invaders_row.append(invader)
             invaders.append(invaders_row)
         self.invaders = invaders
