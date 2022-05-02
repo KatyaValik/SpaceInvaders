@@ -7,20 +7,18 @@ from Space_bullet import SpaceBullet
 
 
 class Invaders(GameObject):
-    def __init__(self, rows, columns):
+    def __init__(self, rows, columns, hardy_count):
         self.invaders = None
-        self.create_invaders(rows, columns)
+        self.create_invaders(rows, columns, hardy_count)
         self.last_row = None
-        self.score = 0
         self.killed = False
         self.lost = False
-
         self.x_left = c.screen_width
         self.x_right = 0
         self.space_bullets = []
         self.bullet_timer = time.time()
 
-    def create_invaders(self, rows, columns):
+    def create_invaders(self, rows, columns, hardy_count):
         self.last_row = columns
         invaders = []
         for row in range(rows):
@@ -41,6 +39,10 @@ class Invaders(GameObject):
                 invaders_row.append(invader)
             invaders.append(invaders_row)
         self.invaders = invaders
+        for i in range(hardy_count):
+            row = randint(0, len(self.invaders) - 1)
+            col = randint(0, len(self.invaders[row]) - 1)
+            self.invaders[row][col].type = 1
 
     def change_direction(self):
         for invaders_row in self.invaders:

@@ -3,3 +3,5 @@ invaders_columns = 6
 
 shelters_coordinates = [(125, 500, 30), (250, 500, 30), (375, 500, 30), (500, 500, 30)]
 shelters_count = len(shelters_coordinates)
+
+hardy_invaders_count = 5

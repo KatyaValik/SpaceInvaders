@@ -21,6 +21,7 @@ class SpaceInvaders(Game):
         self.invaders = None
         self.player = None
         self.lives = c.initial_lives
+        self.score = 0
         self.level_number = 0
         self.shelters = None
         self.score_label = None
@@ -45,9 +46,9 @@ class SpaceInvaders(Game):
         self.objects.append(self.player)
 
     def create_invaders(self):
-        eval(c.levels[self.level_number]).invaders_rows
         invaders = Invaders(eval(c.levels[self.level_number]).invaders_rows,
-                            eval(c.levels[self.level_number]).invaders_columns)
+                            eval(c.levels[self.level_number]).invaders_columns,
+                            eval(c.levels[self.level_number]).hardy_invaders_count)
         self.invaders = invaders
         self.objects.append(self.invaders)
 
@@ -72,7 +73,7 @@ class SpaceInvaders(Game):
     def create_labels(self):
         self.score_label = TextObject(c.score_offset,
                                       c.status_offset_y,
-                                      lambda: f'SCORE: {self.invaders.score}',
+                                      lambda: f'SCORE: {self.score}',
                                       c.text_color,
                                       c.font_name,
                                       c.font_size)
@@ -97,9 +98,13 @@ class SpaceInvaders(Game):
             for invader in row:
                 for bullet in self.player.bullets:
                     if pygame.Rect.colliderect(invader.bounds, bullet.bounds):
-                        row.remove(invader)
-                        self.player.bullets.remove(bullet)
-                        self.invaders.score = self.invaders.score + 1
+                        if invader.type == 0:
+                            row.remove(invader)
+                            self.player.bullets.remove(bullet)
+                            self.score = self.score + 1
+                        else:
+                            invader.type = 0
+                            self.player.bullets.remove(bullet)
 
     def kill_player(self):
         for space_bullet in self.invaders.space_bullets:
@@ -145,8 +150,10 @@ class SpaceInvaders(Game):
         self.game_over = True
 
     def new_level(self):
+        self.show_message(f'LEVEL: {self.level_number + 1}', centralized=True)
         self.objects = []
         self.create_objects()
+        self.invaders.score = self.score
 
     def update(self):
         if self.invaders.killed and self.level_number == c.levels_count:

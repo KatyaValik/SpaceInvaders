@@ -53,3 +53,5 @@ message_duration = 2
 
 levels = ['level1', 'level2', 'level3']
 levels_count = len(levels) - 1
+
+invaders_type = ['usual', 'hardy']
