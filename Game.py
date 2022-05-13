@@ -11,7 +11,7 @@ class Game:
                  back_image_filename,
                  frame_rate):
         self.background_image = \
-            pygame.image.load(back_image_filename)
+            pygame.image.load('C:/Users/Ekaterina/PycharmProjects/python_2sem/Space_Invaders/' + back_image_filename)
         self.frame_rate = frame_rate
         self.game_over = False
         self.objects = []
@@ -23,6 +23,8 @@ class Game:
         self.keyup_handlers = defaultdict(list)
 
     def handle_events(self):
+        """Функция проверяет условие закрытие окна и завершает программу
+            Вызывает обработчики для всех событий, которые возникли в очередной итерации главного цикла игры"""
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -35,14 +37,20 @@ class Game:
                     handler(event.key)
 
     def update(self):
+        """ Обновляет все объекты в игре """
         for o in self.objects:
             o.update()
 
     def draw(self):
+        """ Отрисовывает все объекты в игре """
         for o in self.objects:
             o.draw(self.surface)
 
     def run(self):
+        """ Главный цикл игры:
+                вызывает функции для отлавливания событий, обновления и отрисовки объектов игры, обновдения экрана
+                обновляет таймер игры
+                """
         while not self.game_over:
             self.surface.blit(self.background_image, (0, 0))
 

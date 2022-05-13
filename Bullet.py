@@ -9,8 +9,10 @@ class Bullet(GameObject):
         # self.rect = self.surf.get_rect()
 
     def draw(self, surface):
+        """ Отрисовывает пулю """
         # surface.blit(self.surf, self.rect)
         pygame.draw.rect(surface, (255, 0, 0), self.bounds)
 
     def update(self):
+        """ Обновляет координаты пули """
         self.move(0, -self.speed[1])

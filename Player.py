@@ -7,7 +7,7 @@ import time
 
 class Player(GameObject):
     def __init__(self, x, y, image, width, height):
-        GameObject.__init__(self, x, y, width, height, [1, 0])
+        GameObject.__init__(self, x, y, width, height, [3, 0])
         # self.surf = pygame.image.load(image)
         # self.rect = self.surf.get_rect()
         self.moving_left = False
@@ -25,9 +25,9 @@ class Player(GameObject):
             bullet.draw(surface)
 
     def handle(self, key):
-        if key == pygame.K_LEFT:
+        if key == pygame.K_LEFT or key == pygame.K_a:
             self.moving_left = not self.moving_left
-        elif key == pygame.K_RIGHT:
+        elif key == pygame.K_RIGHT or key == pygame.K_d:
             self.moving_right = not self.moving_right
         elif key == pygame.K_SPACE and time.time() - self.timer_discontinuous > c.bullet_dist:
             self.space_down = True
@@ -44,14 +44,14 @@ class Player(GameObject):
     def update(self):
         if self.moving_left:
             if self.left - self.speed[0] < 0:
-                self.move(0, 10)
+                self.move(-self.left, 0)
                 self.moving_left = False
             else:
                 self.move(-self.speed[0], 0)
         elif self.moving_right:
             if self.right + self.speed[0] > 600:
-                self.move(0, 10)
-                self.moving_left = True
+                self.move(600 - self.right, 0)
+                self.moving_left = False
             else:
                 self.move(self.speed[0], 0)
         if self.space_down:

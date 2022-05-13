@@ -19,6 +19,7 @@ class Invaders(GameObject):
         self.bullet_timer = time.time()
 
     def create_invaders(self, rows, columns, hardy_count):
+        """ СОздает массив захватчиков """
         self.last_row = columns
         invaders = []
         for row in range(rows):
@@ -45,12 +46,14 @@ class Invaders(GameObject):
             self.invaders[row][col].type = 1
 
     def change_direction(self):
+        """ Изменяет направление движения захватчиков при достжении границы окна """
         for invaders_row in self.invaders:
             for invader in invaders_row:
                 invader.moving_to_left = not invader.moving_to_left
                 invader.move(0, c.invader_down_offset)
 
     def update(self):
+        """  """
         if len(self.invaders) == 0:
             self.killed = True
             return

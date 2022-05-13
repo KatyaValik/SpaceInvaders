@@ -15,6 +15,7 @@ class Invader(GameObject):
         self.killed = False
 
     def draw(self, surface):
+        """ Отрисовывает захватчика """
         # surface.blit(self.surf, self.rect)
         if self.type == 0:
             pygame.draw.rect(surface, (255, 255, 255), self.bounds)
@@ -22,6 +23,7 @@ class Invader(GameObject):
             pygame.draw.rect(surface, (255, 0, 0), self.bounds)
 
     def update(self):
+        """ Обнвляет координаты захватчика """
         if self.moving_to_left:
             self.move(-self.speed[0], 0)
         else:

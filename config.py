@@ -1,6 +1,6 @@
 screen_width = 600
 screen_height = 600
-background_image = 'images//background.jpg'
+background_image = 'images/background.jpg'
 frame_rate = 60
 
 player_width = 25
@@ -55,3 +55,11 @@ levels = ['level1', 'level2', 'level3']
 levels_count = len(levels) - 1
 
 invaders_type = ['usual', 'hardy']
+
+saucer_pause = 5
+saucer_width = 30
+saucer_height = 10
+saucer_image = "images//background.jpg"
+saucer_offset = 20
+saucer_score = 10
+

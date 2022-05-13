@@ -9,5 +9,6 @@ class Shelter(GameObject):
         self.damage_counter = 0
 
     def draw(self, surface):
+        """ Отрисовывает укрытие """
         pygame.draw.rect(surface, c.shelter_colours[self.damage_counter], self.bounds)
 
